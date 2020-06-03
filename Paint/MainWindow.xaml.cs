@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
+
+using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Win32;
 
 namespace Paint
 {
@@ -346,26 +341,6 @@ namespace Paint
             }
         }
 
-        private void SaveCanvas(SaveFileDialog saveDialog)
-        {
-            if (saveDialog == null) throw new ArgumentNullException(nameof(saveDialog));
-            var rtb = new RenderTargetBitmap((int) DrawBox.RenderSize.Width,
-                (int) DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
-            rtb.Render(DrawBox);
-            var encoder = saveDialog.SafeFileName.Split(".")[1] switch
-            {
-                "png" => (BitmapEncoder) new PngBitmapEncoder(),
-                "jpeg" => new JpegBitmapEncoder(),
-                "gif" => new GifBitmapEncoder(),
-                "bmp" => new BmpBitmapEncoder(),
-                _ => null
-            };
-            encoder?.Frames.Add(BitmapFrame.Create(rtb));
-            var path = saveDialog.FileName;
-            using var fs = File.OpenWrite(path);
-            encoder?.Save(fs);
-        }
-
         private void MenuInfo_Click(object sender, RoutedEventArgs e)
         {
         }
@@ -438,7 +413,7 @@ namespace Paint
 
         #endregion
 
-        #region Thickness events
+        #region Set color and thick
 
         private void NormalThickButton_Click(object sender, RoutedEventArgs e)
         {
@@ -484,14 +459,34 @@ namespace Paint
             selectedThick = MyThickness.Light;
         }
 
-        #endregion
-
         private void ColorPicker_Change(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             if (ColorPicker.SelectedColor.HasValue)
             {
                 selectedColor = ColorPicker.SelectedColor.Value;
             }
+        }
+
+        #endregion
+
+        private void SaveCanvas(SaveFileDialog saveDialog)
+        {
+            if (saveDialog == null) throw new ArgumentNullException(nameof(saveDialog));
+            var rtb = new RenderTargetBitmap((int)DrawBox.RenderSize.Width,
+                (int)DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(DrawBox);
+            var encoder = saveDialog.SafeFileName.Split(".")[1] switch
+            {
+                "png" => (BitmapEncoder)new PngBitmapEncoder(),
+                "jpeg" => new JpegBitmapEncoder(),
+                "gif" => new GifBitmapEncoder(),
+                "bmp" => new BmpBitmapEncoder(),
+                _ => null
+            };
+            encoder?.Frames.Add(BitmapFrame.Create(rtb));
+            var path = saveDialog.FileName;
+            using var fs = File.OpenWrite(path);
+            encoder?.Save(fs);
         }
     }
 }
