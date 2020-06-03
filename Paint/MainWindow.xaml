@@ -15,8 +15,10 @@
                 <MenuItem x:Name="Open" Header="Open file" InputGestureText="Ctrl+O" Click="MenuOpen_Click" />
                 <MenuItem x:Name="Save" Header="Save" InputGestureText="Ctrl+S" Click="MenuSave_Click" />
                 <MenuItem Header="Save as">
-                    <MenuItem x:Name="PNG" Header="PNG" Click="MenuPNGSave_Click" />
-                    <MenuItem x:Name="JPEG" Header="JPEG" Click="MenuJPEGSave_Click" />
+                    <MenuItem x:Name="Png" Header="PNG" Click="MenuPNGSave_Click" />
+                    <MenuItem x:Name="Jpeg" Header="JPEG" Click="MenuJPEGSave_Click" />
+                    <MenuItem x:Name="Gif" Header="GIF" Click="MenuGifSave_Click" />
+                    <MenuItem x:Name="Bitmap" Header="BITMAP" Click="MenuBitmapSave_Click" />
                 </MenuItem>
                 <MenuItem x:Name="Print" Header="Print" InputGestureText="Ctrl+P" Click="MenuPrint_Click" />
                 <MenuItem x:Name="Info" Header="Info" InputGestureText="F1" Click="MenuInfo_Click" />

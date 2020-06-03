@@ -39,6 +39,11 @@ namespace Paint
             Bolder = 8
         }
 
+        private const string GifFilter = "Gif image (*.gif)|*.gif";
+        private const string JpegFilter = "Jpeg image (*.jpeg)|*.jpeg";
+        private const string BitmapFilter = "Bitmap file (*.bmp)|*.bmp";
+        private const string PngFilter = "Png image (*.png)|*.png";
+
         private MyShape selectedShape = MyShape.Line;
 
         private Point start;
@@ -331,8 +336,8 @@ namespace Paint
         {
             var saveDialog = new SaveFileDialog
             {
-                Filter = "PNG image (*.png)|*.png|JPEG image (*.jpeg)|*.jpeg",
-                DefaultExt = "png",
+                Filter = $"{JpegFilter}|{PngFilter}|{GifFilter}|{BitmapFilter}",
+                DefaultExt = "jpeg",
                 AddExtension = true
             };
             if (saveDialog.ShowDialog(this).GetValueOrDefault(false))
@@ -343,13 +348,16 @@ namespace Paint
 
         private void SaveCanvas(SaveFileDialog saveDialog)
         {
-            var rtb = new RenderTargetBitmap((int)DrawBox.RenderSize.Width,
-                (int)DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+            if (saveDialog == null) throw new ArgumentNullException(nameof(saveDialog));
+            var rtb = new RenderTargetBitmap((int) DrawBox.RenderSize.Width,
+                (int) DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
             rtb.Render(DrawBox);
             var encoder = saveDialog.SafeFileName.Split(".")[1] switch
             {
-                "png" => (BitmapEncoder)new PngBitmapEncoder(),
+                "png" => (BitmapEncoder) new PngBitmapEncoder(),
                 "jpeg" => new JpegBitmapEncoder(),
+                "gif" => new GifBitmapEncoder(),
+                "bmp" => new BmpBitmapEncoder(),
                 _ => null
             };
             encoder?.Frames.Add(BitmapFrame.Create(rtb));
@@ -376,7 +384,9 @@ namespace Paint
         {
             var saveDialog = new SaveFileDialog
             {
-                Filter = "Data Files (*.png)|*.png", DefaultExt = "png", AddExtension = true
+                Filter = $"{PngFilter}",
+                DefaultExt = "png",
+                AddExtension = true
             };
             if (saveDialog.ShowDialog(this).GetValueOrDefault(false))
             {
@@ -388,8 +398,36 @@ namespace Paint
         {
             var saveDialog = new SaveFileDialog
             {
-                Filter = "Data Files (*.jpeg)|*.jpeg",
+                Filter = $"{JpegFilter}",
                 DefaultExt = "jpeg",
+                AddExtension = true
+            };
+            if (saveDialog.ShowDialog(this).GetValueOrDefault(false))
+            {
+                SaveCanvas(saveDialog);
+            }
+        }
+
+        private void MenuGifSave_Click(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog
+            {
+                Filter = $"{GifFilter}",
+                DefaultExt = "gif",
+                AddExtension = true
+            };
+            if (saveDialog.ShowDialog(this).GetValueOrDefault(false))
+            {
+                SaveCanvas(saveDialog);
+            }
+        }
+
+        private void MenuBitmapSave_Click(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog
+            {
+                Filter = $"{BitmapFilter}",
+                DefaultExt = "bmp",
                 AddExtension = true
             };
             if (saveDialog.ShowDialog(this).GetValueOrDefault(false))
