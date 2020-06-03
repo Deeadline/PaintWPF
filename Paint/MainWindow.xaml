@@ -1,0 +1,76 @@
+﻿<Window x:Class="Paint.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Paint"
+        ResizeMode="NoResize"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="20">
+            <MenuItem Header="File">
+                <MenuItem x:Name="New" Header="New file" InputGestureText="Ctrl+N" Click="MenuNew_Click" />
+                <MenuItem x:Name="Open" Header="Open file" InputGestureText="Ctrl+O" Click="MenuOpen_Click" />
+                <MenuItem x:Name="Save" Header="Save" InputGestureText="Ctrl+S" Click="MenuSave_Click" />
+                <MenuItem Header="Save as">
+                    <MenuItem x:Name="PNG" Header="PNG" Click="MenuPNGSave_Click" />
+                    <MenuItem x:Name="JPEG" Header="JPEG" Click="MenuJPEGSave_Click" />
+                </MenuItem>
+                <MenuItem x:Name="Print" Header="Print" InputGestureText="Ctrl+P" Click="MenuPrint_Click" />
+                <MenuItem x:Name="Info" Header="Info" InputGestureText="F1" Click="MenuInfo_Click" />
+                <MenuItem x:Name="Exit" Header="Exit" InputGestureText="ESC" Click="MenuExit_Click" />
+            </MenuItem>
+            <MenuItem Header="Toolbox">
+                <MenuItem Header="Clipboard">
+                    <MenuItem x:Name="MenuCut" Header="Cut" Command="ApplicationCommands.Cut" InputGestureText="Ctrl+X" />
+                    <MenuItem x:Name="MenuCopy" Header="Copy" Command="ApplicationCommands.Copy"
+                              InputGestureText="Ctrl+C" />
+                    <MenuItem x:Name="MenuPaste" Header="Paste" Command="ApplicationCommands.Paste"
+                              InputGestureText="Ctrl+V" />
+                </MenuItem>
+                <MenuItem Header="Image">
+                    <MenuItem x:Name="MenuSelect" Header="Select" />
+                    <MenuItem x:Name="MenuRotate" Header="Rotate" />
+                </MenuItem>
+                <MenuItem Header="Tools">
+                    <MenuItem x:Name="Pencil" Header="Pencil" />
+                    <MenuItem x:Name="CanvasFill" Header="Fill" />
+                    <MenuItem x:Name="CanvasEraser" Header="Erase" />
+                </MenuItem>
+                <MenuItem Header="Shapes" x:Name="Shapes">
+                    <MenuItem x:Name="Line" Header="Line" IsCheckable="True" StaysOpenOnClick="False"
+                              Click="LineButton_Click" IsChecked="True" />
+                    <MenuItem x:Name="Rectangle" Header="Rectangle" IsCheckable="True" StaysOpenOnClick="False"
+                              Click="RectangleButton_Click" />
+                    <MenuItem x:Name="Ellipsis" Header="Ellipsis" IsCheckable="True" StaysOpenOnClick="False"
+                              Click="EllipseButton_Click" />
+                    <MenuItem x:Name="Polyline" Header="Polyline" IsCheckable="True" StaysOpenOnClick="False"
+                              Click="PolylineButton_Click" />
+                    <MenuItem x:Name="Polygon" Header="Polygon" IsCheckable="True" StaysOpenOnClick="False"
+                              Click="PolygonButton_Click" />
+                </MenuItem>
+                <MenuItem Header="Size" Name="BrushThickness">
+                    <MenuItem x:Name="LightThick" Header="Light" IsCheckable="True" StaysOpenOnClick="False"
+                              Click="LightThick_OnClickButton_Click" />
+                    <MenuItem x:Name="NormalThick" Header="Normal" IsCheckable="True" StaysOpenOnClick="False"
+                              IsChecked="true"
+                              Click="NormalThickButton_Click" />
+                    <MenuItem x:Name="BoldThick" Header="Bold" IsCheckable="True" StaysOpenOnClick="False"
+                              Click="BoldThickButton_Click" />
+                    <MenuItem x:Name="BolderThick" Header="Bolder" IsCheckable="True" StaysOpenOnClick="False"
+                              Click="BolderThick_OnClickButton_Click" />
+                </MenuItem>
+                <xctk:ColorPicker Name="ColorPicker" DisplayColorAndName="False"
+                                  ShowDropDownButton="False"
+                                  SelectedColor="Black"
+                                  SelectedColorChanged="ColorPicker_Change">
+                </xctk:ColorPicker>
+            </MenuItem>
+            <MenuItem Header="View" />
+        </Menu>
+        <Canvas Name="DrawBox" Background="AntiqueWhite" Height="580" Width="800" MouseDown="DrawBox_OnMouseDown"
+                MouseUp="DrawBox_OnMouseUp" MouseMove="DrawBox_OnMouseMove"  />
+    </DockPanel>
+</Window>
