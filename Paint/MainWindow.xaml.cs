@@ -69,7 +69,7 @@ namespace Paint
             selectedDrawMode = DrawMode.Shapes;
 
             ClearSelectedTools();
-            ClearSelectedShapes(Line.Name);
+            ClearSelectedShapes(((MenuItem) sender).Name);
         }
 
         private void EllipseButton_Click(object sender, RoutedEventArgs e)
@@ -78,7 +78,7 @@ namespace Paint
             selectedDrawMode = DrawMode.Shapes;
 
             ClearSelectedTools();
-            ClearSelectedShapes(Ellipsis.Name);
+            ClearSelectedShapes(((MenuItem) sender).Name);
         }
 
         private void RectangleButton_Click(object sender, RoutedEventArgs e)
@@ -87,7 +87,7 @@ namespace Paint
             selectedDrawMode = DrawMode.Shapes;
 
             ClearSelectedTools();
-            ClearSelectedShapes(Rectangle.Name);
+            ClearSelectedShapes(((MenuItem) sender).Name);
         }
 
         private void PolylineButton_Click(object sender, RoutedEventArgs e)
@@ -96,7 +96,7 @@ namespace Paint
             selectedDrawMode = DrawMode.Shapes;
 
             ClearSelectedTools();
-            ClearSelectedShapes(Polyline.Name);
+            ClearSelectedShapes(((MenuItem) sender).Name);
         }
 
         private void PolygonButton_Click(object sender, RoutedEventArgs e)
@@ -105,14 +105,14 @@ namespace Paint
             selectedDrawMode = DrawMode.Shapes;
 
             ClearSelectedTools();
-            ClearSelectedShapes(Polygon.Name);
+            ClearSelectedShapes(((MenuItem) sender).Name);
         }
 
         private void EraserButton_Click(object sender, RoutedEventArgs e)
         {
             selectedDrawMode = DrawMode.Erase;
 
-            ClearSelectedTools(CanvasEraser.Name);
+            ClearSelectedTools(((MenuItem) sender).Name);
             ClearSelectedShapes();
         }
 
@@ -120,7 +120,7 @@ namespace Paint
         {
             selectedDrawMode = DrawMode.Fill;
 
-            ClearSelectedTools(CanvasFill.Name);
+            ClearSelectedTools(((MenuItem) sender).Name);
             ClearSelectedShapes();
         }
 
@@ -128,7 +128,7 @@ namespace Paint
         {
             selectedDrawMode = DrawMode.Pencil;
 
-            ClearSelectedTools(Pencil.Name);
+            ClearSelectedTools(((MenuItem) sender).Name);
             ClearSelectedShapes();
         }
 
@@ -158,7 +158,7 @@ namespace Paint
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                start = e.GetPosition(DrawBox);
+                start = e.GetPosition((Canvas) sender);
             }
         }
 
@@ -167,20 +167,20 @@ namespace Paint
             switch (selectedDrawMode)
             {
                 case DrawMode.Pencil:
-                    DrawPencil(e);
+                    DrawPencil((Canvas)sender, e);
                     break;
                 case DrawMode.Erase:
-                    DrawErase(e);
+                    DrawErase((Canvas)sender, e);
                     break;
                 case DrawMode.Fill:
                     break;
                 case DrawMode.Shapes:
-                    DrawShapes(e);
+                    DrawShapes((Canvas)sender, e);
                     break;
             }
         }
 
-        private void DrawErase(MouseEventArgs e)
+        private void DrawErase(Canvas canvas, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -195,13 +195,13 @@ namespace Paint
                 };
 
 
-                start = e.GetPosition(DrawBox);
+                start = e.GetPosition(canvas);
 
                 DrawBox.Children.Add(line);
             }
         }
 
-        private void DrawPencil(MouseEventArgs e)
+        private void DrawPencil(Canvas canvas, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -211,36 +211,36 @@ namespace Paint
                     StrokeThickness = (double) selectedThick,
                     X1 = start.X,
                     Y1 = start.Y,
-                    X2 = e.GetPosition(DrawBox).X,
-                    Y2 = e.GetPosition(DrawBox).Y
+                    X2 = e.GetPosition(canvas).X,
+                    Y2 = e.GetPosition(canvas).Y
                 };
 
 
-                start = e.GetPosition(DrawBox);
+                start = e.GetPosition(canvas);
 
                 DrawBox.Children.Add(line);
             }
         }
 
-        private void DrawShapes(MouseEventArgs e)
+        private void DrawShapes(Canvas canvas, MouseEventArgs e)
         {
             switch (selectedShape)
             {
                 case MyShape.Polyline when polyLine == null:
                     return;
                 case MyShape.Polyline:
-                    polyLine.Points[^1] = e.GetPosition(DrawBox);
+                    polyLine.Points[^1] = e.GetPosition(canvas);
                     break;
                 case MyShape.Polygon when polygon == null:
                     return;
                 case MyShape.Polygon:
-                    polygon.Points[^1] = e.GetPosition(DrawBox);
+                    polygon.Points[^1] = e.GetPosition(canvas);
                     break;
                 default:
                 {
                     if (e.LeftButton == MouseButtonState.Pressed)
                     {
-                        end = e.GetPosition(DrawBox);
+                        end = e.GetPosition(canvas);
                     }
 
                     break;
