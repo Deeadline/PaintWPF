@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Paint"
         ResizeMode="NoResize"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="800" Width="800">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="20">
             <MenuItem Header="File">
@@ -36,14 +36,14 @@
                     <MenuItem x:Name="MenuSelect" Header="Select" />
                     <MenuItem x:Name="MenuRotate" Header="Rotate" />
                 </MenuItem>
-                <MenuItem Header="Tools">
-                    <MenuItem x:Name="Pencil" Header="Pencil" />
-                    <MenuItem x:Name="CanvasFill" Header="Fill" />
-                    <MenuItem x:Name="CanvasEraser" Header="Erase" />
+                <MenuItem Header="Tools" x:Name="Tools">
+                    <MenuItem x:Name="Pencil" Header="Pencil" Click="PencilButton_Click" StaysOpenOnClick="False" IsChecked="True" />
+                    <MenuItem x:Name="CanvasFill" Header="Fill" Click="FillButton_Click" StaysOpenOnClick="False" />
+                    <MenuItem x:Name="CanvasEraser" Header="Erase" Click="EraserButton_Click" StaysOpenOnClick="False" />
                 </MenuItem>
                 <MenuItem Header="Shapes" x:Name="Shapes">
                     <MenuItem x:Name="Line" Header="Line" IsCheckable="True" StaysOpenOnClick="False"
-                              Click="LineButton_Click" IsChecked="True" />
+                              Click="LineButton_Click" />
                     <MenuItem x:Name="Rectangle" Header="Rectangle" IsCheckable="True" StaysOpenOnClick="False"
                               Click="RectangleButton_Click" />
                     <MenuItem x:Name="Ellipsis" Header="Ellipsis" IsCheckable="True" StaysOpenOnClick="False"
@@ -72,7 +72,7 @@
             </MenuItem>
             <MenuItem Header="View" />
         </Menu>
-        <Canvas Name="DrawBox" Background="AntiqueWhite" Height="580" Width="800" MouseDown="DrawBox_OnMouseDown"
+        <Canvas Name="DrawBox" Background="White" Height="800" Width="800" MouseDown="DrawBox_OnMouseDown"
                 MouseUp="DrawBox_OnMouseUp" MouseMove="DrawBox_OnMouseMove"  />
     </DockPanel>
 </Window>

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-
 using System;
 using System.IO;
 using System.Linq;
@@ -26,6 +25,14 @@ namespace Paint
             Polygon
         }
 
+        private enum DrawMode
+        {
+            Pencil,
+            Erase,
+            Fill,
+            Shapes
+        }
+
         private enum MyThickness
         {
             Light = 2,
@@ -40,6 +47,7 @@ namespace Paint
         private const string PngFilter = "Png image (*.png)|*.png";
 
         private MyShape selectedShape = MyShape.Line;
+        private DrawMode selectedDrawMode = DrawMode.Pencil;
 
         private Point start;
         private Point end;
@@ -57,57 +65,89 @@ namespace Paint
 
         private void LineButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = Shapes.Items.Cast<MenuItem>().ToArray();
-            foreach (var menuItem in x)
-            {
-                menuItem.IsChecked = menuItem.Name == Line.Name;
-            }
-
             selectedShape = MyShape.Line;
+            selectedDrawMode = DrawMode.Shapes;
+
+            ClearSelectedTools();
+            ClearSelectedShapes(Line.Name);
         }
 
         private void EllipseButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = Shapes.Items.Cast<MenuItem>().ToArray();
-            foreach (var menuItem in x)
-            {
-                menuItem.IsChecked = menuItem.Name == Ellipsis.Name;
-            }
-
             selectedShape = MyShape.Ellipse;
+            selectedDrawMode = DrawMode.Shapes;
+
+            ClearSelectedTools();
+            ClearSelectedShapes(Ellipsis.Name);
         }
 
         private void RectangleButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = Shapes.Items.Cast<MenuItem>().ToArray();
-            foreach (var menuItem in x)
-            {
-                menuItem.IsChecked = menuItem.Name == Rectangle.Name;
-            }
-
             selectedShape = MyShape.Rectangle;
+            selectedDrawMode = DrawMode.Shapes;
+
+            ClearSelectedTools();
+            ClearSelectedShapes(Rectangle.Name);
         }
 
         private void PolylineButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = Shapes.Items.Cast<MenuItem>().ToArray();
-            foreach (var menuItem in x)
-            {
-                menuItem.IsChecked = menuItem.Name == Polyline.Name;
-            }
-
             selectedShape = MyShape.Polyline;
+            selectedDrawMode = DrawMode.Shapes;
+
+            ClearSelectedTools();
+            ClearSelectedShapes(Polyline.Name);
         }
 
         private void PolygonButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = Shapes.Items.Cast<MenuItem>().ToArray();
-            foreach (var menuItem in x)
-            {
-                menuItem.IsChecked = menuItem.Name == Polyline.Name;
-            }
-
             selectedShape = MyShape.Polygon;
+            selectedDrawMode = DrawMode.Shapes;
+
+            ClearSelectedTools();
+            ClearSelectedShapes(Polygon.Name);
+        }
+
+        private void EraserButton_Click(object sender, RoutedEventArgs e)
+        {
+            selectedDrawMode = DrawMode.Erase;
+
+            ClearSelectedTools(CanvasEraser.Name);
+            ClearSelectedShapes();
+        }
+
+        private void FillButton_Click(object sender, RoutedEventArgs e)
+        {
+            selectedDrawMode = DrawMode.Fill;
+
+            ClearSelectedTools(CanvasFill.Name);
+            ClearSelectedShapes();
+        }
+
+        private void PencilButton_Click(object sender, RoutedEventArgs e)
+        {
+            selectedDrawMode = DrawMode.Pencil;
+
+            ClearSelectedTools(Pencil.Name);
+            ClearSelectedShapes();
+        }
+
+        private void ClearSelectedShapes(string shapeName = null)
+        {
+            var shapeItems = Shapes.Items.Cast<MenuItem>().ToArray();
+            foreach (var shapeItem in shapeItems)
+            {
+                shapeItem.IsChecked = !string.IsNullOrEmpty(shapeName) && shapeItem.Name == shapeName;
+            }
+        }
+
+        private void ClearSelectedTools(string toolName = null)
+        {
+            var toolItems = Tools.Items.Cast<MenuItem>().ToArray();
+            foreach (var toolItem in toolItems)
+            {
+                toolItem.IsChecked = !string.IsNullOrEmpty(toolName) && toolItem.Name == toolName;
+            }
         }
 
         #endregion
@@ -116,10 +156,73 @@ namespace Paint
 
         private void DrawBox_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            start = e.GetPosition(this);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                start = e.GetPosition(DrawBox);
+            }
         }
 
         private void DrawBox_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            switch (selectedDrawMode)
+            {
+                case DrawMode.Pencil:
+                    DrawPencil(e);
+                    break;
+                case DrawMode.Erase:
+                    DrawErase(e);
+                    break;
+                case DrawMode.Fill:
+                    break;
+                case DrawMode.Shapes:
+                    DrawShapes(e);
+                    break;
+            }
+        }
+
+        private void DrawErase(MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var line = new Line
+                {
+                    Stroke = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
+                    StrokeThickness = (double) selectedThick,
+                    X1 = start.X,
+                    Y1 = start.Y,
+                    X2 = e.GetPosition(DrawBox).X,
+                    Y2 = e.GetPosition(DrawBox).Y
+                };
+
+
+                start = e.GetPosition(DrawBox);
+
+                DrawBox.Children.Add(line);
+            }
+        }
+
+        private void DrawPencil(MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var line = new Line
+                {
+                    Stroke = new SolidColorBrush(selectedColor),
+                    StrokeThickness = (double) selectedThick,
+                    X1 = start.X,
+                    Y1 = start.Y,
+                    X2 = e.GetPosition(DrawBox).X,
+                    Y2 = e.GetPosition(DrawBox).Y
+                };
+
+
+                start = e.GetPosition(DrawBox);
+
+                DrawBox.Children.Add(line);
+            }
+        }
+
+        private void DrawShapes(MouseEventArgs e)
         {
             switch (selectedShape)
             {
@@ -137,7 +240,7 @@ namespace Paint
                 {
                     if (e.LeftButton == MouseButtonState.Pressed)
                     {
-                        end = e.GetPosition(this);
+                        end = e.GetPosition(DrawBox);
                     }
 
                     break;
@@ -147,23 +250,26 @@ namespace Paint
 
         private void DrawBox_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            switch (selectedShape)
+            if (selectedDrawMode == DrawMode.Shapes)
             {
-                case MyShape.Line:
-                    DrawLine();
-                    break;
-                case MyShape.Ellipse:
-                    DrawEllipse();
-                    break;
-                case MyShape.Rectangle:
-                    DrawRectangle();
-                    break;
-                case MyShape.Polygon:
-                    DrawPolygon(e);
-                    break;
-                case MyShape.Polyline:
-                    DrawPolyLine(e);
-                    break;
+                switch (selectedShape)
+                {
+                    case MyShape.Line:
+                        DrawLine();
+                        break;
+                    case MyShape.Ellipse:
+                        DrawEllipse();
+                        break;
+                    case MyShape.Rectangle:
+                        DrawRectangle();
+                        break;
+                    case MyShape.Polygon:
+                        DrawPolygon(e);
+                        break;
+                    case MyShape.Polyline:
+                        DrawPolyLine(e);
+                        break;
+                }
             }
         }
 
@@ -174,12 +280,12 @@ namespace Paint
         private void DrawRectangle()
         {
             // kolor zmieni sie z panelu wyboru kolorów
-            Rectangle newLine = new Rectangle()
+            var newLine = new Rectangle()
             {
                 Stroke = new SolidColorBrush(selectedColor),
                 StrokeThickness = (double) selectedThick,
-                Height = 10, // w zaleznosci od przyszlego wyboru rozmiaru
-                Width = 10 // w zaleznosci od wyboru
+                Height = 10,
+                Width = 10
             };
             if (end.X >= start.X)
             {
@@ -208,13 +314,12 @@ namespace Paint
 
         private void DrawEllipse()
         {
-            // kolor zmieni sie z panelu wyboru kolorów
-            Ellipse newLine = new Ellipse
+            var newLine = new Ellipse
             {
                 Stroke = new SolidColorBrush(selectedColor),
                 StrokeThickness = (double) selectedThick,
-                Height = 10, // w zaleznosci od przyszlego wyboru rozmiaru
-                Width = 10 // w zaleznosci od wyboru
+                Height = 10,
+                Width = 10
             };
             if (end.X >= start.X)
             {
@@ -295,7 +400,6 @@ namespace Paint
 
         private void DrawLine()
         {
-            // kolor zmieni sie z panelu wyboru kolorów
             var newLine = new Line
             {
                 Stroke = new SolidColorBrush(selectedColor),
@@ -472,12 +576,12 @@ namespace Paint
         private void SaveCanvas(SaveFileDialog saveDialog)
         {
             if (saveDialog == null) throw new ArgumentNullException(nameof(saveDialog));
-            var rtb = new RenderTargetBitmap((int)DrawBox.RenderSize.Width,
-                (int)DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+            var rtb = new RenderTargetBitmap((int) DrawBox.RenderSize.Width,
+                (int) DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
             rtb.Render(DrawBox);
             var encoder = saveDialog.SafeFileName.Split(".")[1] switch
             {
-                "png" => (BitmapEncoder)new PngBitmapEncoder(),
+                "png" => (BitmapEncoder) new PngBitmapEncoder(),
                 "jpeg" => new JpegBitmapEncoder(),
                 "gif" => new GifBitmapEncoder(),
                 "bmp" => new BmpBitmapEncoder(),
