@@ -1,0 +1,16 @@
+﻿<Window x:Class="Paint.Info"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Paint"
+        mc:Ignorable="d"
+        Title="Info" Height="220" Width="282" ResizeMode="NoResize">
+    <Grid Margin="0,0,0,-16">
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="95" Width="296">
+            Version: 1.6 <LineBreak/>
+            Solution: WPF Solution <LineBreak/>
+            Authors: Mikołaj Szymański, Marcin Smolarz
+        </TextBlock>
+    </Grid>
+</Window>
