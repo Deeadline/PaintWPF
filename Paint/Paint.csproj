@@ -10,4 +10,25 @@
     <PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Resource Include="Resources/bucket.bmp"/>
+		<Resource Include="Resources/eraser.bmp"/>
+		<Resource Include="Resources/exit.bmp"/>
+		<Resource Include="Resources/folder.bmp"/>
+		<Resource Include="Resources/info.bmp"/>
+		<Resource Include="Resources/newFile.bmp"/>
+		<Resource Include="Resources/openFile.bmp"/>
+		<Resource Include="Resources/pencil.bmp"/>
+		<Resource Include="Resources/printer.bmp"/>
+		<Resource Include="Resources/save.bmp"/>
+		<Resource Include="Resources/toolbox.bmp"/>
+		<Resource Include="Resources/view.bmp"/>
+		<Resource Include="Resources/saveAs.bmp"/>
+		<Resource Include="Resources/cut.bmp"/>
+		<Resource Include="Resources/copy.bmp"/>
+		<Resource Include="Resources/paste.bmp"/>
+		<Resource Include="Resources/select.bmp"/>
+		<Resource Include="Resources/rotate.bmp"/>
+	</ItemGroup>
+
 </Project>

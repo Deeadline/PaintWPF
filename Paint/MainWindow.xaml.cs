@@ -447,6 +447,8 @@ namespace Paint
 
         private void MenuInfo_Click(object sender, RoutedEventArgs e)
         {
+            Info infoWindow = new Info();
+            infoWindow.Show();
         }
 
         private void MenuPrint_Click(object sender, RoutedEventArgs e)

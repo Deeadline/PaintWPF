@@ -11,35 +11,100 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="20">
             <MenuItem Header="File">
-                <MenuItem x:Name="New" Header="New file" InputGestureText="Ctrl+N" Click="MenuNew_Click" />
-                <MenuItem x:Name="Open" Header="Open file" InputGestureText="Ctrl+O" Click="MenuOpen_Click" />
-                <MenuItem x:Name="Save" Header="Save" InputGestureText="Ctrl+S" Click="MenuSave_Click" />
+                <MenuItem.Icon>
+                    <Image Source="./Resources/folder.bmp"/>
+                </MenuItem.Icon>
+                <MenuItem x:Name="New" Header="New file" InputGestureText="Ctrl+N" Click="MenuNew_Click" >
+                    <MenuItem.Icon>
+                        <Image Source="./Resources/newFile.bmp"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="Open" Header="Open file" InputGestureText="Ctrl+O" Click="MenuOpen_Click" >
+                    <MenuItem.Icon>
+                        <Image Source="./Resources/openFile.bmp"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="Save" Header="Save" InputGestureText="Ctrl+S" Click="MenuSave_Click" >
+                    <MenuItem.Icon>
+                        <Image Source="./Resources/save.bmp"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="Save as">
+                    <MenuItem.Icon>
+                        <Image Source="./Resources/saveAs.bmp"/>
+                    </MenuItem.Icon>
                     <MenuItem x:Name="Png" Header="PNG" Click="MenuPNGSave_Click" />
                     <MenuItem x:Name="Jpeg" Header="JPEG" Click="MenuJPEGSave_Click" />
                     <MenuItem x:Name="Gif" Header="GIF" Click="MenuGifSave_Click" />
                     <MenuItem x:Name="Bitmap" Header="BITMAP" Click="MenuBitmapSave_Click" />
                 </MenuItem>
-                <MenuItem x:Name="Print" Header="Print" InputGestureText="Ctrl+P" Click="MenuPrint_Click" />
-                <MenuItem x:Name="Info" Header="Info" InputGestureText="F1" Click="MenuInfo_Click" />
-                <MenuItem x:Name="Exit" Header="Exit" InputGestureText="ESC" Click="MenuExit_Click" />
+                <MenuItem x:Name="Print" Header="Print" InputGestureText="Ctrl+P" Click="MenuPrint_Click" >
+                    <MenuItem.Icon>
+                        <Image Source="./Resources/printer.bmp"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="Info" Header="Info" InputGestureText="F1" Click="MenuInfo_Click" >
+                    <MenuItem.Icon>
+                        <Image Source="./Resources/info.bmp"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="Exit" Header="Exit" InputGestureText="ESC" Click="MenuExit_Click" >
+                    <MenuItem.Icon>
+                        <Image Source="./Resources/exit.bmp"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Toolbox">
+                <MenuItem.Icon>
+                    <Image Source="./Resources/toolbox.bmp"/>
+                </MenuItem.Icon>
                 <MenuItem Header="Clipboard">
-                    <MenuItem x:Name="MenuCut" Header="Cut" Command="ApplicationCommands.Cut" InputGestureText="Ctrl+X" />
+                    <MenuItem x:Name="MenuCut" Header="Cut" Command="ApplicationCommands.Cut" InputGestureText="Ctrl+X" >
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/cut.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem x:Name="MenuCopy" Header="Copy" Command="ApplicationCommands.Copy"
-                              InputGestureText="Ctrl+C" />
+                              InputGestureText="Ctrl+C" >
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/copy.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem x:Name="MenuPaste" Header="Paste" Command="ApplicationCommands.Paste"
-                              InputGestureText="Ctrl+V" />
+                              InputGestureText="Ctrl+V" >
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/paste.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Image">
-                    <MenuItem x:Name="MenuSelect" Header="Select" />
-                    <MenuItem x:Name="MenuRotate" Header="Rotate" />
+                    <MenuItem x:Name="MenuSelect" Header="Select" >
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/select.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="MenuRotate" Header="Rotate" >
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/rotate.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Tools" x:Name="Tools">
-                    <MenuItem x:Name="Pencil" Header="Pencil" Click="PencilButton_Click" StaysOpenOnClick="False" IsChecked="True" />
-                    <MenuItem x:Name="CanvasFill" Header="Fill" Click="FillButton_Click" StaysOpenOnClick="False" />
-                    <MenuItem x:Name="CanvasEraser" Header="Erase" Click="EraserButton_Click" StaysOpenOnClick="False" />
+                    <MenuItem x:Name="Pencil" Header="Pencil" Click="PencilButton_Click" StaysOpenOnClick="False" IsChecked="True">
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/pencil.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="CanvasFill" Header="Fill" Click="FillButton_Click" StaysOpenOnClick="False" >
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/bucket.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="CanvasEraser" Header="Erase" Click="EraserButton_Click" StaysOpenOnClick="False" >
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/eraser.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Shapes" x:Name="Shapes">
                     <MenuItem x:Name="Line" Header="Line" IsCheckable="True" StaysOpenOnClick="False"
@@ -70,7 +135,11 @@
                                   SelectedColorChanged="ColorPicker_Change">
                 </xctk:ColorPicker>
             </MenuItem>
-            <MenuItem Header="View" />
+            <MenuItem Header="View" >
+                <MenuItem.Icon>
+                    <Image Source="./Resources/view.bmp"/>
+                </MenuItem.Icon>
+            </MenuItem>
         </Menu>
         <Canvas Name="DrawBox" Background="White" Height="800" Width="800" MouseDown="DrawBox_OnMouseDown"
                 MouseUp="DrawBox_OnMouseUp" MouseMove="DrawBox_OnMouseMove"  />
