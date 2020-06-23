@@ -167,15 +167,15 @@ namespace Paint
             switch (selectedDrawMode)
             {
                 case DrawMode.Pencil:
-                    DrawPencil((Canvas)sender, e);
+                    DrawPencil((Canvas) sender, e);
                     break;
                 case DrawMode.Erase:
-                    DrawErase((Canvas)sender, e);
+                    DrawErase((Canvas) sender, e);
                     break;
                 case DrawMode.Fill:
                     break;
                 case DrawMode.Shapes:
-                    DrawShapes((Canvas)sender, e);
+                    DrawShapes((Canvas) sender, e);
                     break;
             }
         }
@@ -419,16 +419,21 @@ namespace Paint
 
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
-            if (DrawBox.Children.Count > 0)
-            {
-            }
-
             DrawBox.Children.Clear();
         }
 
         private void MenuOpen_Click(object sender, RoutedEventArgs e)
         {
-            new OpenFileDialog().ShowDialog();
+            var openDialog = new OpenFileDialog();
+            if (openDialog.ShowDialog(this).GetValueOrDefault() && openDialog.CheckFileExists)
+            {
+                var brush = new ImageBrush()
+                {
+                    ImageSource = new BitmapImage(new Uri(openDialog.FileName, UriKind.Relative))
+                };
+                DrawBox.Background = brush;
+                openDialog.Reset();
+            }
         }
 
         private void MenuSave_Click(object sender, RoutedEventArgs e)
@@ -453,7 +458,10 @@ namespace Paint
 
         private void MenuPrint_Click(object sender, RoutedEventArgs e)
         {
-            new PrintDialog().ShowDialog();
+            var printDialog = new PrintDialog();
+            if (printDialog.ShowDialog().GetValueOrDefault())
+            {
+            }
         }
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
@@ -593,6 +601,40 @@ namespace Paint
             var path = saveDialog.FileName;
             using var fs = File.OpenWrite(path);
             encoder?.Save(fs);
+        }
+
+        private void MenuNew_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void MenuCopy_Click(object sender, ExecutedRoutedEventArgs e)
+        {
+            CopyToClipboard();
+        }
+
+        private void CopyToClipboard()
+        {
+            var rtb = new RenderTargetBitmap((int) DrawBox.RenderSize.Width,
+                (int) DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(DrawBox);
+            Clipboard.SetImage(rtb);
+        }
+
+        private void MenuCut_Click(object sender, ExecutedRoutedEventArgs e)
+        {
+            CopyToClipboard();
+            DrawBox.Background = null;
+            DrawBox.Children.Clear();
+        }
+
+        private void MenuPaste_Click(object sender, ExecutedRoutedEventArgs e)
+        {
+            DrawBox.Children.Clear();
+            DrawBox.Background = new ImageBrush
+            {
+                ImageSource = Clipboard.GetImage()
+            };
         }
     }
 }
