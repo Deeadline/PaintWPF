@@ -37,9 +37,21 @@
                     <MenuItem x:Name="MenuRotate" Header="Rotate" />
                 </MenuItem>
                 <MenuItem Header="Tools" x:Name="Tools">
-                    <MenuItem x:Name="Pencil" Header="Pencil" Click="PencilButton_Click" StaysOpenOnClick="False" IsChecked="True" />
-                    <MenuItem x:Name="CanvasFill" Header="Fill" Click="FillButton_Click" StaysOpenOnClick="False" />
-                    <MenuItem x:Name="CanvasEraser" Header="Erase" Click="EraserButton_Click" StaysOpenOnClick="False" />
+                    <MenuItem x:Name="Pencil" Header="Pencil" Click="PencilButton_Click" StaysOpenOnClick="False" IsChecked="True">
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/pencil.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="CanvasFill" Header="Fill" Click="FillButton_Click" StaysOpenOnClick="False" >
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/bucket.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="CanvasEraser" Header="Erase" Click="EraserButton_Click" StaysOpenOnClick="False" >
+                        <MenuItem.Icon>
+                            <Image Source="./Resources/erase.bmp"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Shapes" x:Name="Shapes">
                     <MenuItem x:Name="Line" Header="Line" IsCheckable="True" StaysOpenOnClick="False"
