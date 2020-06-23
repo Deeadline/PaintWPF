@@ -447,6 +447,7 @@ namespace Paint
 
         private void MenuInfo_Click(object sender, RoutedEventArgs e)
         {
+            popuwWindow.IsOpen = ture;
         }
 
         private void MenuPrint_Click(object sender, RoutedEventArgs e)
