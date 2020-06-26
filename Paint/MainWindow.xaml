@@ -12,7 +12,7 @@
         <CommandBinding Command="New" CanExecute="MenuNew_CanExecute" Executed="MenuNew_Click" />
         <CommandBinding Command="Open" CanExecute="MenuNew_CanExecute" Executed="MenuOpen_Click" />
         <CommandBinding Command="Save" CanExecute="MenuNew_CanExecute" Executed="MenuSave_Click" />
-        <CommandBinding Command="Print" CanExecute="MenuNew_CanExecute" Executed="MenuPrint_Click" />
+        <!-- <CommandBinding Command="Print" CanExecute="MenuNew_CanExecute" Executed="MenuPrint_Click" /> -->
         <CommandBinding Command="Close" CanExecute="MenuNew_CanExecute" Executed="MenuExit_Click" />
         <CommandBinding Command="Help" CanExecute="MenuNew_CanExecute" Executed="MenuInfo_Click" />
         <CommandBinding Command="Copy" CanExecute="MenuNew_CanExecute" Executed="MenuCopy_Click" />
@@ -49,11 +49,11 @@
                     <MenuItem x:Name="Gif" Header="GIF" Click="MenuGifSave_Click" />
                     <MenuItem x:Name="Bitmap" Header="BITMAP" Click="MenuBitmapSave_Click" />
                 </MenuItem>
-                <MenuItem x:Name="Print" Header="Print" Command="Print" InputGestureText="Ctrl+P" Click="MenuPrint_Click">
-                    <MenuItem.Icon>
-                        <Image Source="./Resources/printer.bmp" />
-                    </MenuItem.Icon>
-                </MenuItem>
+                <!-- <MenuItem x:Name="Print" Header="Print" Command="Print" InputGestureText="Ctrl+P" Click="MenuPrint_Click"> -->
+                <!--     <MenuItem.Icon> -->
+                <!--         <Image Source="./Resources/printer.bmp" /> -->
+                <!--     </MenuItem.Icon> -->
+                <!-- </MenuItem> -->
                 <MenuItem x:Name="Info" Header="Info" Command="Help" InputGestureText="F1" Click="MenuInfo_Click">
                     <MenuItem.Icon>
                         <Image Source="./Resources/info.bmp" />
