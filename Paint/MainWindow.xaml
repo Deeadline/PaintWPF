@@ -89,15 +89,17 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Image">
-                    <MenuItem x:Name="MenuSelect" Header="Select">
-                        <MenuItem.Icon>
-                            <Image Source="./Resources/select.bmp" />
-                        </MenuItem.Icon>
-                    </MenuItem>
+                    <!-- <MenuItem x:Name="MenuSelect" Header="Select"> -->
+                    <!--     <MenuItem.Icon> -->
+                    <!--         <Image Source="./Resources/select.bmp" /> -->
+                    <!--     </MenuItem.Icon> -->
+                    <!-- </MenuItem> -->
                     <MenuItem x:Name="MenuRotate" Header="Rotate">
                         <MenuItem.Icon>
                             <Image Source="./Resources/rotate.bmp" />
                         </MenuItem.Icon>
+                        <MenuItem x:Name="FlipVertical" Header="Flip vertical" Click="FlipVertical_OnClick"></MenuItem>
+                        <MenuItem x:Name="FlipHorizontal" Header="Flip horizontal" Click="FlipHorizontal_OnClick"></MenuItem>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Tools" x:Name="Tools">
@@ -153,6 +155,6 @@
             </MenuItem>
         </Menu>
         <Canvas Name="DrawBox" Background="White" Height="800" Width="800" MouseDown="DrawBox_OnMouseDown"
-                MouseUp="DrawBox_OnMouseUp" MouseMove="DrawBox_OnMouseMove" />
+                MouseUp="DrawBox_OnMouseUp" MouseMove="DrawBox_OnMouseMove"/>
     </DockPanel>
 </Window>
