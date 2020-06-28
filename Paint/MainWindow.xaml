@@ -136,6 +136,10 @@
                                   ShowDropDownButton="False"
                                   SelectedColor="Black"
                                   SelectedColorChanged="ColorPicker_Change" />
+                <xctk:ColorPicker Name="FillColorPicker" DisplayColorAndName="False"
+                                  ShowDropDownButton="False"
+                                  SelectedColor="White"
+                                  SelectedColorChanged="FillColorPicker_Change" />
             </MenuItem>
         </Menu>
         <Canvas Name="DrawBox" Background="White" Height="800" Width="800" MouseDown="DrawBox_OnMouseDown"

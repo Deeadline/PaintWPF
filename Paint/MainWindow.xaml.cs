@@ -55,6 +55,7 @@ namespace Paint
         private Polygon polygon = null;
         private MyThickness selectedThick = MyThickness.Normal;
         private Color selectedColor = Color.FromRgb(0, 0, 0);
+        private Color fillColor = Color.FromRgb(255, 255, 255);
 
         public MainWindow()
         {
@@ -158,7 +159,34 @@ namespace Paint
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                start = e.GetPosition((Canvas) sender);
+                if (selectedDrawMode == DrawMode.Fill)
+                {
+                    switch (e.Source)
+                    {
+                        case Polyline _polyline:
+                            _polyline.Fill = new SolidColorBrush(fillColor);
+                            break;
+                        case Polygon _polygon:
+                            _polygon.Fill = new SolidColorBrush(fillColor);
+                            break;
+                        case Rectangle _rectangle:
+                            _rectangle.Fill = new SolidColorBrush(fillColor);
+                            break;
+                        case Ellipse _ellipse:
+                            _ellipse.Fill = new SolidColorBrush(fillColor);
+                            break;
+                        case Line _line:
+                            _line.Fill = new SolidColorBrush(fillColor);
+                            break;
+                        case Canvas _canvas:
+                            _canvas.Background = new SolidColorBrush(fillColor);
+                            break;
+                    }
+                }
+                else
+                {
+                    start = e.GetPosition((Canvas) sender);
+                }
             }
         }
 
@@ -541,15 +569,16 @@ namespace Paint
 
         private void DrawBox_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            zoom += zoomSpeed * e.Delta; 
-            if (zoom < zoomMin) 
-            { 
-                zoom = zoomMin; 
-            } 
-            if (zoom > zoomMax) 
+            zoom += zoomSpeed * e.Delta;
+            if (zoom < zoomMin)
             {
-                zoom = zoomMax; 
-            } 
+                zoom = zoomMin;
+            }
+
+            if (zoom > zoomMax)
+            {
+                zoom = zoomMax;
+            }
 
             Point mousePos = e.GetPosition(DrawBox);
 
@@ -562,7 +591,6 @@ namespace Paint
                 DrawBox.RenderTransform = new ScaleTransform(zoom, zoom);
             }
         }
-
 
         #endregion
 
@@ -617,6 +645,14 @@ namespace Paint
             if (ColorPicker.SelectedColor.HasValue)
             {
                 selectedColor = ColorPicker.SelectedColor.Value;
+            }
+        }
+
+        private void FillColorPicker_Change(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            if (FillColorPicker.SelectedColor.HasValue)
+            {
+                fillColor = FillColorPicker.SelectedColor.Value;
             }
         }
 

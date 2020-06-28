@@ -11,7 +11,8 @@
             Version: 1.6 <LineBreak/>
             Solution: WPF Solution <LineBreak/>
             Authors: Mikołaj Szymański, Marcin Smolarz <LineBreak/><LineBreak/>
-            To zoom in/out use Your mouse wheel.
+            To zoom in/out use Your mouse wheel. <LineBreak/> 
+            To fill shape - click on it directly, otherwise canvas background change.
         </TextBlock>
     </Grid>
 </Window>
