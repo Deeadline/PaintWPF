@@ -534,6 +534,36 @@ namespace Paint
             }
         }
 
+        private Double zoomMax = 5;
+        private Double zoomMin = 1;
+        private Double zoomSpeed = 0.001;
+        private Double zoom = 1;
+
+        private void DrawBox_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            zoom += zoomSpeed * e.Delta; 
+            if (zoom < zoomMin) 
+            { 
+                zoom = zoomMin; 
+            } 
+            if (zoom > zoomMax) 
+            {
+                zoom = zoomMax; 
+            } 
+
+            Point mousePos = e.GetPosition(DrawBox);
+
+            if (zoom > 1)
+            {
+                DrawBox.RenderTransform = new ScaleTransform(zoom, zoom, mousePos.X, mousePos.Y);
+            }
+            else
+            {
+                DrawBox.RenderTransform = new ScaleTransform(zoom, zoom);
+            }
+        }
+
+
         #endregion
 
         #region Set color and thick
