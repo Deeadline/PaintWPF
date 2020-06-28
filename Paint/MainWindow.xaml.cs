@@ -167,15 +167,15 @@ namespace Paint
             switch (selectedDrawMode)
             {
                 case DrawMode.Pencil:
-                    DrawPencil((Canvas)sender, e);
+                    DrawPencil((Canvas) sender, e);
                     break;
                 case DrawMode.Erase:
-                    DrawErase((Canvas)sender, e);
+                    DrawErase((Canvas) sender, e);
                     break;
                 case DrawMode.Fill:
                     break;
                 case DrawMode.Shapes:
-                    DrawShapes((Canvas)sender, e);
+                    DrawShapes((Canvas) sender, e);
                     break;
             }
         }
@@ -191,7 +191,7 @@ namespace Paint
                     X1 = start.X,
                     Y1 = start.Y,
                     X2 = e.GetPosition(DrawBox).X,
-                    Y2 = e.GetPosition(DrawBox).Y
+                    Y2 = e.GetPosition(DrawBox).Y,
                 };
 
 
@@ -205,20 +205,21 @@ namespace Paint
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var line = new Line
+                var pencil = new Line
                 {
                     Stroke = new SolidColorBrush(selectedColor),
                     StrokeThickness = (double) selectedThick,
                     X1 = start.X,
                     Y1 = start.Y,
                     X2 = e.GetPosition(canvas).X,
-                    Y2 = e.GetPosition(canvas).Y
+                    Y2 = e.GetPosition(canvas).Y,
+                    RenderTransformOrigin = new Point(0.5, 0.5),
+                    Focusable = true
                 };
-
 
                 start = e.GetPosition(canvas);
 
-                DrawBox.Children.Add(line);
+                DrawBox.Children.Add(pencil);
             }
         }
 
@@ -279,71 +280,74 @@ namespace Paint
 
         private void DrawRectangle()
         {
-            // kolor zmieni sie z panelu wyboru kolorów
-            var newLine = new Rectangle()
+            var rectangle = new Rectangle
             {
                 Stroke = new SolidColorBrush(selectedColor),
                 StrokeThickness = (double) selectedThick,
                 Height = 10,
-                Width = 10
+                Width = 10,
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                Focusable = true
             };
             if (end.X >= start.X)
             {
-                newLine.SetValue(Canvas.LeftProperty, start.X);
-                newLine.Width = end.X - start.X;
+                rectangle.SetValue(Canvas.LeftProperty, start.X);
+                rectangle.Width = end.X - start.X;
             }
             else
             {
-                newLine.SetValue(Canvas.LeftProperty, end.X);
-                newLine.Width = start.X - end.X;
+                rectangle.SetValue(Canvas.LeftProperty, end.X);
+                rectangle.Width = start.X - end.X;
             }
 
             if (end.Y >= start.Y)
             {
-                newLine.SetValue(Canvas.TopProperty, start.Y - 20);
-                newLine.Height = end.Y - start.Y;
+                rectangle.SetValue(Canvas.TopProperty, start.Y - 20);
+                rectangle.Height = end.Y - start.Y;
             }
             else
             {
-                newLine.SetValue(Canvas.TopProperty, end.Y - 20);
-                newLine.Height = start.Y - end.Y;
+                rectangle.SetValue(Canvas.TopProperty, end.Y - 20);
+                rectangle.Height = start.Y - end.Y;
             }
 
-            DrawBox.Children.Add(newLine);
+            DrawBox.Children.Add(rectangle);
         }
 
         private void DrawEllipse()
         {
-            var newLine = new Ellipse
+            var ellipse = new Ellipse
             {
                 Stroke = new SolidColorBrush(selectedColor),
                 StrokeThickness = (double) selectedThick,
                 Height = 10,
-                Width = 10
+                Width = 10,
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                Focusable = true
             };
             if (end.X >= start.X)
             {
-                newLine.SetValue(Canvas.LeftProperty, start.X);
-                newLine.Width = end.X - start.X;
+                ellipse.SetValue(Canvas.LeftProperty, start.X);
+                ellipse.Width = end.X - start.X;
             }
             else
             {
-                newLine.SetValue(Canvas.LeftProperty, end.X);
-                newLine.Width = start.X - end.X;
+                ellipse.SetValue(Canvas.LeftProperty, end.X);
+                ellipse.Width = start.X - end.X;
             }
 
             if (end.Y >= start.Y)
             {
-                newLine.SetValue(Canvas.TopProperty, start.Y - 20);
-                newLine.Height = end.Y - start.Y;
+                ellipse.SetValue(Canvas.TopProperty, start.Y - 20);
+                ellipse.Height = end.Y - start.Y;
             }
             else
             {
-                newLine.SetValue(Canvas.TopProperty, end.Y - 20);
-                newLine.Height = start.Y - end.Y;
+                ellipse.SetValue(Canvas.TopProperty, end.Y - 20);
+                ellipse.Height = start.Y - end.Y;
             }
 
-            DrawBox.Children.Add(newLine);
+            DrawBox.Children.Add(ellipse);
         }
 
         private void DrawPolyLine(MouseButtonEventArgs e)
@@ -365,6 +369,8 @@ namespace Paint
                 {
                     Stroke = new SolidColorBrush(selectedColor),
                     StrokeThickness = (double) selectedThick,
+                    RenderTransformOrigin = new Point(0.5, 0.5),
+                    Focusable = true
                 };
                 polyLine.Points.Add(e.GetPosition(DrawBox));
                 polyLine.Points.Add(e.GetPosition(DrawBox));
@@ -391,6 +397,8 @@ namespace Paint
                 {
                     Stroke = new SolidColorBrush(selectedColor),
                     StrokeThickness = (double) selectedThick,
+                    RenderTransformOrigin = new Point(0.5, 0.5),
+                    Focusable = true,
                 };
                 polygon.Points.Add(e.GetPosition(DrawBox));
                 polygon.Points.Add(e.GetPosition(DrawBox));
@@ -400,17 +408,18 @@ namespace Paint
 
         private void DrawLine()
         {
-            var newLine = new Line
+            var line = new Line
             {
                 Stroke = new SolidColorBrush(selectedColor),
                 X1 = start.X,
                 Y1 = start.Y - 20,
                 X2 = end.X,
                 Y2 = end.Y - 20,
-                StrokeThickness = (double) selectedThick
+                StrokeThickness = (double) selectedThick,
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                Focusable = true
             };
-
-            DrawBox.Children.Add(newLine);
+            DrawBox.Children.Add(line);
         }
 
         #endregion
@@ -419,16 +428,21 @@ namespace Paint
 
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
-            if (DrawBox.Children.Count > 0)
-            {
-            }
-
             DrawBox.Children.Clear();
         }
 
         private void MenuOpen_Click(object sender, RoutedEventArgs e)
         {
-            new OpenFileDialog().ShowDialog();
+            var openDialog = new OpenFileDialog();
+            if (openDialog.ShowDialog(this).GetValueOrDefault() && openDialog.CheckFileExists)
+            {
+                var brush = new ImageBrush()
+                {
+                    ImageSource = new BitmapImage(new Uri(openDialog.FileName, UriKind.Relative))
+                };
+                DrawBox.Background = brush;
+                openDialog.Reset();
+            }
         }
 
         private void MenuSave_Click(object sender, RoutedEventArgs e)
@@ -453,7 +467,10 @@ namespace Paint
 
         private void MenuPrint_Click(object sender, RoutedEventArgs e)
         {
-            new PrintDialog().ShowDialog();
+            var printDialog = new PrintDialog();
+            if (printDialog.ShowDialog().GetValueOrDefault())
+            {
+            }
         }
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
@@ -625,6 +642,64 @@ namespace Paint
             encoder?.Save(fs);
         }
 
-        
+        private void MenuNew_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void MenuCopy_Click(object sender, ExecutedRoutedEventArgs e)
+        {
+            CopyToClipboard();
+        }
+
+        private void CopyToClipboard()
+        {
+            var rtb = new RenderTargetBitmap((int) DrawBox.RenderSize.Width,
+                (int) DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(DrawBox);
+            Clipboard.SetImage(rtb);
+        }
+
+        private void MenuCut_Click(object sender, ExecutedRoutedEventArgs e)
+        {
+            CopyToClipboard();
+            DrawBox.Background = null;
+            DrawBox.Children.Clear();
+        }
+
+        private void MenuPaste_Click(object sender, ExecutedRoutedEventArgs e)
+        {
+            DrawBox.Children.Clear();
+            DrawBox.Background = new ImageBrush
+            {
+                ImageSource = Clipboard.GetImage()
+            };
+        }
+
+        private void FlipVertical_OnClick(object sender, RoutedEventArgs e)
+        {
+            var canvasChildren = DrawBox.Children;
+            foreach (UIElement child in canvasChildren)
+            {
+                var oldTransform = child.RenderTransform as ScaleTransform;
+                child.RenderTransform = new ScaleTransform
+                {
+                    ScaleY = -(oldTransform?.ScaleY ?? 1)
+                };
+            }
+        }
+
+        private void FlipHorizontal_OnClick(object sender, RoutedEventArgs e)
+        {
+            var canvasChildren = DrawBox.Children;
+            foreach (UIElement child in canvasChildren)
+            {
+                var oldTransform = child.RenderTransform as ScaleTransform;
+                child.RenderTransform = new ScaleTransform
+                {
+                    ScaleX = -(oldTransform?.ScaleX ?? 1)
+                };
+            }
+        }
     }
 }
