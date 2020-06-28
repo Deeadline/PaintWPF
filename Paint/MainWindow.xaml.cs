@@ -546,25 +546,6 @@ namespace Paint
             }
         }
 
-        private void ZoomOut_Click(object sender, RoutedEventArgs e)
-        {
-            zoom -= 1;
-            if (zoom < zoomMin)
-            {
-                zoom = zoomMin;
-            }
-            DrawBox.RenderTransform = new ScaleTransform(zoom, zoom);
-        }
-
-        private void ZoomIn_Click(object sender, RoutedEventArgs e)
-        {
-            zoom += 1;
-            if (zoom > zoomMax)
-            {
-                zoom = zoomMax;
-            }
-            DrawBox.RenderTransform = new ScaleTransform(zoom, zoom);
-        }
 
         #endregion
 
