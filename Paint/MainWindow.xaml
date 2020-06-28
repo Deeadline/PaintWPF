@@ -43,7 +43,7 @@
                         <Image Source="./Resources/printer.bmp"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="Info" Header="Info" InputGestureText="F1" Click="MenuInfo_Click" >
+                <MenuItem x:Name="Info" Header="Info and Tips" InputGestureText="F1" Click="MenuInfo_Click" >
                     <MenuItem.Icon>
                         <Image Source="./Resources/info.bmp"/>
                     </MenuItem.Icon>
@@ -135,13 +135,8 @@
                                   SelectedColorChanged="ColorPicker_Change">
                 </xctk:ColorPicker>
             </MenuItem>
-            <MenuItem Header="View" >
-                <MenuItem.Icon>
-                    <Image Source="./Resources/view.bmp"/>
-                </MenuItem.Icon>
-            </MenuItem>
         </Menu>
         <Canvas Name="DrawBox" Background="White" Height="800" Width="800" MouseDown="DrawBox_OnMouseDown"
-                MouseUp="DrawBox_OnMouseUp" MouseMove="DrawBox_OnMouseMove"  />
+                MouseUp="DrawBox_OnMouseUp" MouseMove="DrawBox_OnMouseMove" MouseWheel="DrawBox_MouseWheel" />
     </DockPanel>
 </Window>

@@ -10,7 +10,8 @@
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="95" Width="296">
             Version: 1.6 <LineBreak/>
             Solution: WPF Solution <LineBreak/>
-            Authors: Mikołaj Szymański, Marcin Smolarz
+            Authors: Mikołaj Szymański, Marcin Smolarz <LineBreak/><LineBreak/>
+            To zoom in/out use Your mouse wheel.
         </TextBlock>
     </Grid>
 </Window>
