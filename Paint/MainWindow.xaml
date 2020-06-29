@@ -138,7 +138,7 @@
                                   SelectedColorChanged="ColorPicker_Change" />
                 <xctk:ColorPicker Name="FillColorPicker" DisplayColorAndName="False"
                                   ShowDropDownButton="False"
-                                  SelectedColor="White"
+                                  SelectedColor="Transparent"
                                   SelectedColorChanged="FillColorPicker_Change" />
             </MenuItem>
         </Menu>

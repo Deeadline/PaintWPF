@@ -51,11 +51,11 @@ namespace Paint
 
         private Point start;
         private Point end;
-        private Polyline polyLine = null;
-        private Polygon polygon = null;
+        private Polyline polyLine;
+        private Polygon polygon;
         private MyThickness selectedThick = MyThickness.Normal;
-        private Color selectedColor = Color.FromRgb(0, 0, 0);
-        private Color fillColor = Color.FromRgb(255, 255, 255);
+        private Color selectedColor;
+        private Color fillColor;
 
         public MainWindow()
         {
@@ -176,7 +176,7 @@ namespace Paint
                             _ellipse.Fill = new SolidColorBrush(fillColor);
                             break;
                         case Line _line:
-                            _line.Fill = new SolidColorBrush(fillColor);
+                            _line.Stroke = new SolidColorBrush(fillColor);
                             break;
                         case Canvas _canvas:
                             _canvas.Background = new SolidColorBrush(fillColor);
@@ -242,7 +242,7 @@ namespace Paint
                     X2 = e.GetPosition(canvas).X,
                     Y2 = e.GetPosition(canvas).Y,
                     RenderTransformOrigin = new Point(0.5, 0.5),
-                    Focusable = true
+                    Focusable = true,
                 };
 
                 start = e.GetPosition(canvas);
@@ -315,7 +315,8 @@ namespace Paint
                 Height = 10,
                 Width = 10,
                 RenderTransformOrigin = new Point(0.5, 0.5),
-                Focusable = true
+                Focusable = true,
+                Fill = new SolidColorBrush(fillColor)
             };
             if (end.X >= start.X)
             {
@@ -351,7 +352,8 @@ namespace Paint
                 Height = 10,
                 Width = 10,
                 RenderTransformOrigin = new Point(0.5, 0.5),
-                Focusable = true
+                Focusable = true,
+                Fill = new SolidColorBrush(fillColor)
             };
             if (end.X >= start.X)
             {
@@ -398,7 +400,8 @@ namespace Paint
                     Stroke = new SolidColorBrush(selectedColor),
                     StrokeThickness = (double) selectedThick,
                     RenderTransformOrigin = new Point(0.5, 0.5),
-                    Focusable = true
+                    Focusable = true,
+                    Fill = new SolidColorBrush(fillColor)
                 };
                 polyLine.Points.Add(e.GetPosition(DrawBox));
                 polyLine.Points.Add(e.GetPosition(DrawBox));
@@ -427,6 +430,7 @@ namespace Paint
                     StrokeThickness = (double) selectedThick,
                     RenderTransformOrigin = new Point(0.5, 0.5),
                     Focusable = true,
+                    Fill = new SolidColorBrush(fillColor)
                 };
                 polygon.Points.Add(e.GetPosition(DrawBox));
                 polygon.Points.Add(e.GetPosition(DrawBox));
@@ -445,7 +449,7 @@ namespace Paint
                 Y2 = end.Y - 20,
                 StrokeThickness = (double) selectedThick,
                 RenderTransformOrigin = new Point(0.5, 0.5),
-                Focusable = true
+                Focusable = true,
             };
             DrawBox.Children.Add(line);
         }
@@ -493,18 +497,17 @@ namespace Paint
             infoWindow.Show();
         }
 
-        private void MenuPrint_Click(object sender, RoutedEventArgs e)
-        {
-            var printDialog = new PrintDialog();
-            if (printDialog.ShowDialog().GetValueOrDefault())
-            {
-            }
-        }
-
         private void MenuExit_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+
+        private void MenuNew_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        #region Save Canvas
 
         private void MenuPNGSave_Click(object sender, RoutedEventArgs e)
         {
@@ -562,39 +565,31 @@ namespace Paint
             }
         }
 
-        private Double zoomMax = 5;
-        private Double zoomMin = 1;
-        private Double zoomSpeed = 0.001;
-        private Double zoom = 1;
-
-        private void DrawBox_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void SaveCanvas(SaveFileDialog saveDialog)
         {
-            zoom += zoomSpeed * e.Delta;
-            if (zoom < zoomMin)
+            if (saveDialog == null) throw new ArgumentNullException(nameof(saveDialog));
+            var rtb = new RenderTargetBitmap((int) DrawBox.RenderSize.Width,
+                (int) DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(DrawBox);
+            var encoder = saveDialog.SafeFileName.Split(".")[1] switch
             {
-                zoom = zoomMin;
-            }
-
-            if (zoom > zoomMax)
-            {
-                zoom = zoomMax;
-            }
-
-            Point mousePos = e.GetPosition(DrawBox);
-
-            if (zoom > 1)
-            {
-                DrawBox.RenderTransform = new ScaleTransform(zoom, zoom, mousePos.X, mousePos.Y);
-            }
-            else
-            {
-                DrawBox.RenderTransform = new ScaleTransform(zoom, zoom);
-            }
+                "png" => (BitmapEncoder) new PngBitmapEncoder(),
+                "jpeg" => new JpegBitmapEncoder(),
+                "gif" => new GifBitmapEncoder(),
+                "bmp" => new BmpBitmapEncoder(),
+                _ => null
+            };
+            encoder?.Frames.Add(BitmapFrame.Create(rtb));
+            var path = saveDialog.FileName;
+            using var fs = File.OpenWrite(path);
+            encoder?.Save(fs);
         }
 
         #endregion
 
-        #region Set color and thick
+        #endregion
+
+        #region Set color and thickness
 
         private void NormalThickButton_Click(object sender, RoutedEventArgs e)
         {
@@ -658,30 +653,7 @@ namespace Paint
 
         #endregion
 
-        private void SaveCanvas(SaveFileDialog saveDialog)
-        {
-            if (saveDialog == null) throw new ArgumentNullException(nameof(saveDialog));
-            var rtb = new RenderTargetBitmap((int) DrawBox.RenderSize.Width,
-                (int) DrawBox.RenderSize.Height, 96d, 96d, PixelFormats.Default);
-            rtb.Render(DrawBox);
-            var encoder = saveDialog.SafeFileName.Split(".")[1] switch
-            {
-                "png" => (BitmapEncoder) new PngBitmapEncoder(),
-                "jpeg" => new JpegBitmapEncoder(),
-                "gif" => new GifBitmapEncoder(),
-                "bmp" => new BmpBitmapEncoder(),
-                _ => null
-            };
-            encoder?.Frames.Add(BitmapFrame.Create(rtb));
-            var path = saveDialog.FileName;
-            using var fs = File.OpenWrite(path);
-            encoder?.Save(fs);
-        }
-
-        private void MenuNew_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
+        #region Copy, Paste and Cut
 
         private void MenuCopy_Click(object sender, ExecutedRoutedEventArgs e)
         {
@@ -712,6 +684,10 @@ namespace Paint
             };
         }
 
+        #endregion
+
+        #region Rotation
+
         private void FlipVertical_OnClick(object sender, RoutedEventArgs e)
         {
             var canvasChildren = DrawBox.Children;
@@ -737,5 +713,41 @@ namespace Paint
                 };
             }
         }
+
+        #endregion
+
+        #region Scroll
+
+        private const double zoomMax = 5;
+        private const double zoomMin = 1;
+        private const double zoomSpeed = 0.001;
+        private double zoom = 1;
+
+        private void DrawBox_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            zoom += zoomSpeed * e.Delta;
+            if (zoom < zoomMin)
+            {
+                zoom = zoomMin;
+            }
+
+            if (zoom > zoomMax)
+            {
+                zoom = zoomMax;
+            }
+
+            var mousePos = e.GetPosition(DrawBox);
+
+            if (zoom > 1)
+            {
+                DrawBox.RenderTransform = new ScaleTransform(zoom, zoom, mousePos.X, mousePos.Y);
+            }
+            else
+            {
+                DrawBox.RenderTransform = new ScaleTransform(zoom, zoom);
+            }
+        }
+
+        #endregion
     }
 }
